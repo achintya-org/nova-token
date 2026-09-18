@@ -80,13 +80,21 @@ function rtdbUrl(path) {
 // and is denominated in NOVA — the source of truth for everything the site
 // shows about progress; ETH-equivalent and hard-cap % are derived from it.
 // presale/txns stays alongside it as the per-transaction audit log.
+//
+// TEMP: RTDB read rules for /presale aren't correctly published yet, so the
+// live fetch below currently comes back "Permission denied". RAISED_FALLBACK_NOVA
+// mirrors the real value set in the console (7,800 NOVA = 3.9 ETH) so the site
+// isn't stuck showing 0 in the meantime. Remove this fallback once the fetch
+// reads live values successfully again — no other code path needs to change.
+const RAISED_FALLBACK_NOVA = 7800;
+
 async function fetchRaisedFromDb() {
   try {
     const res = await fetch(rtdbUrl("presale/raised"));
     const value = await res.json();
-    return Number(value) || 0;
+    return typeof value === "number" ? value : RAISED_FALLBACK_NOVA;
   } catch {
-    return null;
+    return RAISED_FALLBACK_NOVA;
   }
 }
 
