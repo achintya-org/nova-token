@@ -510,6 +510,9 @@ a:hover { text-decoration: underline; }
 .roadmap p { color: var(--text-dim); font-size: 13px; margin: 0; line-height: 1.5; }
 
 /* Board */
+.hero.board-hero { padding-bottom: 8px; }
+.board-section { border-top: 0; padding-top: 24px; }
+.board-teaser { margin-top: 18px; }
 .board-intro { max-width: 640px; margin-bottom: 24px; }
 .board-submit {
   background: var(--surface);

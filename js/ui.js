@@ -23,6 +23,7 @@ async function copyText(text, successMessage = "Copied") {
 function initMobileNav() {
   const toggle = document.getElementById("navToggle");
   const menu = document.getElementById("navMenu");
+  if (!toggle || !menu) return;
   toggle.addEventListener("click", () => {
     const open = menu.classList.toggle("open");
     toggle.setAttribute("aria-expanded", String(open));
@@ -49,6 +50,7 @@ function initSmoothScroll() {
 function initCountdown() {
   const wrap = document.getElementById("countdown");
   const tba = document.getElementById("countdownTba");
+  if (!wrap || !tba) return;
   if (!CONFIG.presale.endsAt) {
     wrap.classList.add("hidden");
     tba.classList.remove("hidden");
@@ -77,5 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNav();
   initSmoothScroll();
   initCountdown();
-  document.getElementById("year").textContent = new Date().getFullYear();
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 });

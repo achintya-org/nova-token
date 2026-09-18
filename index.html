@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=6">
+<link rel="stylesheet" href="css/styles.css?v=7">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -29,7 +29,7 @@
       <div class="brand"><span class="mark">N</span>Nova</div>
 
       <nav id="navMenu" class="nav-menu">
-        <a href="#board">Community</a>
+        <a href="board.html">Community Board</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#how-to-buy">How to Buy</a>
         <a href="#roadmap">Roadmap</a>
@@ -39,7 +39,7 @@
 
       <div class="nav-actions">
         <a id="navContact" class="contact-pill" target="_blank" rel="noopener"></a>
-        <button id="connectBtn" class="btn primary small">Connect Wallet</button>
+        <button id="connectBtn" class="btn primary small js-connect-btn">Connect Wallet</button>
         <button id="walletChip" class="wallet-chip hidden" title="Click to disconnect"></button>
         <button id="navToggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -70,9 +70,12 @@
             itself hasn't been deployed yet, so tokens are distributed at TGE.
           </p>
           <div class="hero-cta">
-            <button id="connectBtnHero" class="btn primary">Connect Wallet</button>
+            <button id="connectBtnHero" class="btn primary js-connect-btn">Connect Wallet</button>
             <a href="#tokenomics" class="btn ghost">View Tokenomics</a>
           </div>
+          <p class="hint board-teaser">
+            Want to promote your own link to the community? <a href="board.html">Submit a bid on the Community Board &rarr;</a>
+          </p>
 
           <div class="coin-wrap" aria-hidden="true">
             <svg viewBox="0 0 200 200" class="coin">
@@ -138,29 +141,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <section id="board" class="section">
-      <span class="eyebrow">Community</span>
-      <h2>Boost a Link</h2>
-      <p class="hint board-intro">
-        Submit a link and back it with a bid — the more ETH sent to the presale wallet
-        against a link, the higher it ranks. Anyone can add to an existing link's bid.
-        Bid totals are self-reported by whoever sends them and are not independently
-        verified on-chain; the team reviews and removes fraudulent entries manually.
-      </p>
-
-      <div class="board-submit">
-        <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
-        <input id="boardAmount" class="field" type="number" min="0" step="0.001" placeholder="Bid amount in ETH">
-        <textarea id="boardMessage" class="field" maxlength="500" placeholder="Optional message (max 500 chars)"></textarea>
-        <div class="board-submit-row">
-          <span class="hint" id="boardMessageCount">0/500</span>
-          <button id="boardSubmit" class="btn primary">Submit &amp; Send Bid</button>
-        </div>
-      </div>
-
-      <div id="boardList" class="board-list"></div>
     </section>
 
     <section id="tokenomics" class="section">
@@ -286,14 +266,13 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=6"></script>
+  <script src="js/config.js?v=7"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="js/users.js?v=6"></script>
-  <script src="js/wallet.js?v=6"></script>
-  <script src="js/ui.js?v=6"></script>
-  <script src="js/presale.js?v=6"></script>
-  <script src="js/board.js?v=6"></script>
-  <script src="js/board-ui.js?v=6"></script>
+  <script src="js/users.js?v=7"></script>
+  <script src="js/wallet.js?v=7"></script>
+  <script src="js/ui.js?v=7"></script>
+  <script src="js/shared.js?v=7"></script>
+  <script src="js/presale.js?v=7"></script>
 </body>
 </html>

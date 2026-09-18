@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07060d">
+<title>Nova — Community Board</title>
+<meta name="description" content="Submit a link and back it with a bid to rank it on the Nova community board.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314111f'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23f0b429' stroke-width='2'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='16' fill='%23f0b429'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=7">
+</head>
+<body>
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+  <div id="networkBanner" class="network-banner hidden">
+    Wrong network detected.
+    <button id="switchChainBtn" class="link-btn">Switch to <span id="bannerChainName"></span></button>
+  </div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand"><span class="mark">N</span>Nova</div>
+
+      <nav id="navMenu" class="nav-menu">
+        <a href="index.html">Presale</a>
+        <a href="index.html#tokenomics">Tokenomics</a>
+        <a href="index.html#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a id="navContact" class="contact-pill" target="_blank" rel="noopener"></a>
+        <button id="connectBtn" class="btn primary small js-connect-btn">Connect Wallet</button>
+        <button id="walletChip" class="wallet-chip hidden" title="Click to disconnect"></button>
+        <button id="navToggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="starfield" aria-hidden="true"></div>
+
+    <section class="hero board-hero">
+      <div class="hero-frame">
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+        <p class="frame-title">Community Board</p>
+        <p class="frame-sub">Back a link with a bid — the more sent, the higher it ranks</p>
+      </div>
+    </section>
+
+    <section id="board" class="section board-section">
+      <p class="hint board-intro">
+        Connect your wallet, submit a link, and send a bid directly to the presale wallet
+        to rank it. Anyone can add to an existing link's bid to push it higher. Bid totals
+        are self-reported by whoever sends them and are not independently verified
+        on-chain — the team reviews and removes fraudulent entries manually.
+      </p>
+
+      <div class="board-submit">
+        <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
+        <input id="boardAmount" class="field" type="number" min="0" step="0.001" placeholder="Bid amount in ETH">
+        <textarea id="boardMessage" class="field" maxlength="500" placeholder="Optional message (max 500 chars)"></textarea>
+        <div class="board-submit-row">
+          <span class="hint" id="boardMessageCount">0/500</span>
+          <button id="boardSubmit" class="btn primary">Submit &amp; Send Bid</button>
+        </div>
+      </div>
+
+      <div id="boardList" class="board-list"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="brand"><span class="mark">N</span>Nova</div>
+        <div id="socialLinks" class="social-links"></div>
+      </div>
+      <p>Nova is an early-stage, work-in-progress project. Nothing on this page is financial advice or a solicitation to buy or sell any asset.</p>
+      <p class="muted">&copy; <span id="year"></span> Nova</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js?v=7"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="js/users.js?v=7"></script>
+  <script src="js/wallet.js?v=7"></script>
+  <script src="js/ui.js?v=7"></script>
+  <script src="js/shared.js?v=7"></script>
+  <script src="js/board.js?v=7"></script>
+  <script src="js/board-ui.js?v=7"></script>
+</body>
+</html>
