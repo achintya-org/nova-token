@@ -75,9 +75,10 @@ function initCountdown() {
   setInterval(tick, 1000);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   initMobileNav();
   initSmoothScroll();
+  await window.__configReady;
   initCountdown();
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();

@@ -68,13 +68,41 @@ async function rpcCall(method, params) {
   return result;
 }
 
-async function fetchRaisedNative() {
-  if (!CONFIG.presale.contractAddress) return 0;
+function rtdbUrl(path) {
+  return `${CONFIG.rtdb.baseUrl}/${path}.json`;
+}
+
+// "Raised" is a real, visible node (presale/raised) — not just a number computed
+// in the browser — so it shows up in the RTDB console and can be corrected there
+// manually if a confirmed amount is ever wrong, since crediting still only
+// happens client-side today (no server-side re-verification, per the earlier
+// trade-off discussion). It's always fetched live (never cached at page load)
+// and is denominated in NOVA — the source of truth for everything the site
+// shows about progress; ETH-equivalent and hard-cap % are derived from it.
+// presale/txns stays alongside it as the per-transaction audit log.
+async function fetchRaisedFromDb() {
   try {
-    const result = await rpcCall("eth_getBalance", [CONFIG.presale.contractAddress, "latest"]);
-    return Number(Wallet.formatWei(result, 18, 6));
+    const res = await fetch(rtdbUrl("presale/raised"));
+    const value = await res.json();
+    return Number(value) || 0;
   } catch {
     return null;
+  }
+}
+
+// Records an already-verified purchase (see creditPurchaseIfValid): logs the txn
+// (keyed by its own hash, so the same transaction can never be logged twice) and
+// adds the NOVA amount credited to the visible presale/raised total.
+async function recordPresaleTxn(txHash, address, ethAmount, novaAmount) {
+  try {
+    await fetch(rtdbUrl(`presale/txns/${txHash}`), {
+      method: "PUT",
+      body: JSON.stringify({ address, ethAmount, novaAmount, time: Date.now() }),
+    });
+    const current = (await fetchRaisedFromDb()) || 0;
+    await fetch(rtdbUrl("presale/raised"), { method: "PUT", body: JSON.stringify(current + novaAmount) });
+  } catch {
+    // Best-effort — the NOVA credit itself already succeeded regardless.
   }
 }
 
@@ -113,6 +141,8 @@ async function creditPurchaseIfValid({ txHash, account, expectedWeiHex }) {
     if (result.credited) {
       toast(`Confirmed! ${novaAmount.toLocaleString()} NOVA credited to your bidding balance.`, "success");
       updateCoinDisplay(result.balance);
+      await recordPresaleTxn(txHash, account, ethAmount, novaAmount);
+      renderProgress();
     }
   } catch {
     toast("Couldn't verify the transaction — no NOVA credited.", "error");
@@ -120,12 +150,18 @@ async function creditPurchaseIfValid({ txHash, account, expectedWeiHex }) {
 }
 
 async function renderProgress() {
-  const raised = await fetchRaisedNative();
-  const raisedDisplay = raised === null ? "—" : raised;
-  const pct = raised === null ? 0 : Math.min(100, (raised / CONFIG.presale.hardCapNative) * 100);
+  const raisedNova = await fetchRaisedFromDb();
+  const hardCapNova = CONFIG.presale.hardCapNative * CONFIG.presale.rate;
+  const pct = raisedNova === null ? 0 : Math.min(100, (raisedNova / hardCapNova) * 100);
+  const raisedEth = raisedNova === null ? null : raisedNova / CONFIG.presale.rate;
+
   document.getElementById("progressBar").style.width = `${pct}%`;
-  document.getElementById("raisedAmount").textContent = `${raisedDisplay} ${CONFIG.chain.nativeSymbol}`;
-  document.getElementById("hardCapAmount").textContent = `${CONFIG.presale.hardCapNative} ${CONFIG.chain.nativeSymbol}`;
+  document.getElementById("raisedAmount").textContent =
+    raisedNova === null ? "—" : raisedNova.toLocaleString();
+  document.getElementById("raisedEthEquiv").textContent =
+    raisedEth === null ? "" : `≈ ${raisedEth.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${CONFIG.chain.nativeSymbol} raised`;
+  document.getElementById("hardCapAmount").textContent =
+    `${hardCapNova.toLocaleString()} ${CONFIG.token.symbol} cap`;
   document.getElementById("minMaxHint").textContent =
     `Min ${CONFIG.presale.minBuyNative} · Max ${CONFIG.presale.maxBuyNative} ${CONFIG.chain.nativeSymbol}`;
   document.getElementById("initialLiquidityInline").textContent =
@@ -208,7 +244,8 @@ function initBuyWidget() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await window.__configReady;
   renderTokenomics();
   renderProgress();
   setInterval(renderProgress, 30000);

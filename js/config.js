@@ -23,7 +23,7 @@ const CONFIG = {
     minBuyNative: 0.05,
     maxBuyNative: 5,
     hardCapNative: 2500, // 2,500 ETH x 2,000 NOVA/ETH = 5,000,000 NOVA = 25% of 20,000,000 supply
-    endsAt: null, // TODO: set an ISO date string to enable the countdown
+    endsAt: "2026-12-31T23:59:59Z",
   },
   tokenomics: [
     { label: "Presale", pct: 25, color: "#f0b429" },
