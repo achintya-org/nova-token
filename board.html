@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=12">
+<link rel="stylesheet" href="css/styles.css?v=13">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -73,28 +73,29 @@
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
         <h1 class="frame-headline">Community Board</h1>
-        <p class="frame-sub">Back a link with free daily coins — the more backed, the higher it ranks</p>
-        <p class="frame-live">No payment required</p>
+        <p class="frame-sub">Back a link with NOVA — the more backed, the higher it ranks</p>
+        <p class="frame-live">Free daily NOVA, or buy more via the presale</p>
       </div>
     </section>
 
     <section id="board" class="section board-section">
       <p class="hint board-intro">
-        Everyone gets 1 free coin per day just for connecting their wallet — no payment
-        required. Submit a link and back it with coins to rank it; anyone can add coins
-        to an existing link to push it higher. Coin totals are self-reported and not
-        independently verified — the team reviews and removes fraudulent entries manually.
+        Everyone gets 1 free NOVA per day just for connecting their wallet, and buying
+        NOVA in the presale credits your bidding balance too (verified on-chain — see the
+        <a href="index.html#tokenomics">presale page</a>). Submit a link and back it with
+        NOVA to rank it; anyone can add NOVA to an existing link to push it higher.
+        The team reviews and removes fraudulent entries manually.
       </p>
-      <p class="hint coin-balance-row">Your balance: <strong id="coinBalance" class="hidden">0 coins</strong></p>
+      <p class="hint coin-balance-row">Your balance: <strong id="coinBalance" class="hidden">0 NOVA</strong></p>
       <p class="hint mm-link-mobile"><a href="https://metamask.app.link/dapp/novapresale.web.app/board.html" target="_blank" rel="noopener" class="js-mm-link">Open in MetaMask &rarr;</a></p>
 
       <div class="board-submit">
         <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
-        <input id="boardAmount" class="field" type="number" min="1" step="1" placeholder="Coins to bid">
+        <input id="boardAmount" class="field" type="number" min="1" step="1" placeholder="NOVA to bid">
         <textarea id="boardMessage" class="field" maxlength="500" placeholder="Optional message (max 500 chars)"></textarea>
         <div class="board-submit-row">
           <span class="hint" id="boardMessageCount">0/500</span>
-          <button id="boardSubmit" class="btn primary">Submit &amp; Spend Coins</button>
+          <button id="boardSubmit" class="btn primary">Submit &amp; Spend NOVA</button>
         </div>
       </div>
 
@@ -113,14 +114,14 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=12"></script>
+  <script src="js/config.js?v=13"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="js/users.js?v=12"></script>
-  <script src="js/wallet.js?v=12"></script>
-  <script src="js/ui.js?v=12"></script>
-  <script src="js/shared.js?v=12"></script>
-  <script src="js/board.js?v=12"></script>
-  <script src="js/board-ui.js?v=12"></script>
+  <script src="js/users.js?v=13"></script>
+  <script src="js/wallet.js?v=13"></script>
+  <script src="js/ui.js?v=13"></script>
+  <script src="js/shared.js?v=13"></script>
+  <script src="js/board.js?v=13"></script>
+  <script src="js/board-ui.js?v=13"></script>
 </body>
 </html>

@@ -212,6 +212,7 @@ const Wallet = (() => {
     sendNative,
     shortAddress,
     formatWei,
+    toWeiHex,
     init,
     get account() {
       return account;

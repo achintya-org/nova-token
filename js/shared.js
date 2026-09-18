@@ -50,7 +50,7 @@ async function refreshWalletChip() {
 function updateCoinDisplay(coins) {
   const el = document.getElementById("coinBalance");
   if (!el) return;
-  el.textContent = `${coins} coin${coins === 1 ? "" : "s"}`;
+  el.textContent = `${coins.toLocaleString()} NOVA`;
   el.classList.remove("hidden");
 }
 
@@ -130,7 +130,7 @@ function initSharedChrome() {
       await refreshWalletChip();
       await recordUser(account);
       const { coins, claimed } = await claimDailyCoin(account);
-      if (claimed) toast("You claimed your free daily coin", "success");
+      if (claimed) toast("You claimed your free daily NOVA", "success");
       updateCoinDisplay(coins);
     }
   });

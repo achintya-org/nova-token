@@ -57,23 +57,64 @@ function renderTokenomics() {
   }
 }
 
+async function rpcCall(method, params) {
+  const res = await fetch(CONFIG.chain.rpcUrls[0], {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+  });
+  const { result } = await res.json();
+  return result;
+}
+
 async function fetchRaisedNative() {
   if (!CONFIG.presale.contractAddress) return 0;
   try {
-    const res = await fetch(CONFIG.chain.rpcUrls[0], {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jsonrpc: "2.0",
-        id: 1,
-        method: "eth_getBalance",
-        params: [CONFIG.presale.contractAddress, "latest"],
-      }),
-    });
-    const { result } = await res.json();
+    const result = await rpcCall("eth_getBalance", [CONFIG.presale.contractAddress, "latest"]);
     return Number(Wallet.formatWei(result, 18, 6));
   } catch {
     return null;
+  }
+}
+
+// Poll the chain directly (not MetaMask) for a mined receipt — this is real,
+// independently-verifiable on-chain confirmation, not a self-reported claim.
+async function waitForReceipt(txHash, { timeoutMs = 180000, intervalMs = 4000 } = {}) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const receipt = await rpcCall("eth_getTransactionReceipt", [txHash]).catch(() => null);
+    if (receipt) return receipt;
+    await new Promise((r) => setTimeout(r, intervalMs));
+  }
+  return null;
+}
+
+async function creditPurchaseIfValid({ txHash, account, expectedWeiHex }) {
+  try {
+    const [tx, receipt] = await Promise.all([
+      rpcCall("eth_getTransactionByHash", [txHash]),
+      waitForReceipt(txHash),
+    ]);
+    if (!tx || !receipt || receipt.status !== "0x1") {
+      toast("Transaction did not confirm — no NOVA credited.", "error");
+      return;
+    }
+    const toMatches = (tx.to || "").toLowerCase() === CONFIG.presale.contractAddress.toLowerCase();
+    const fromMatches = (tx.from || "").toLowerCase() === account.toLowerCase();
+    const valueMatches = BigInt(tx.value) >= BigInt(expectedWeiHex);
+    if (!toMatches || !fromMatches || !valueMatches) {
+      toast("Transaction details didn't match the presale purchase — no NOVA credited.", "error");
+      return;
+    }
+    const ethAmount = Number(Wallet.formatWei(tx.value, 18, 6));
+    const novaAmount = Math.floor(ethAmount * CONFIG.presale.rate);
+    const result = await creditNovaFromPurchase(account, novaAmount, txHash);
+    if (result.credited) {
+      toast(`Confirmed! ${novaAmount.toLocaleString()} NOVA credited to your bidding balance.`, "success");
+      updateCoinDisplay(result.balance);
+    }
+  } catch {
+    toast("Couldn't verify the transaction — no NOVA credited.", "error");
   }
 }
 
@@ -133,8 +174,14 @@ function initBuyWidget() {
     }
     try {
       buyBtn.disabled = true;
-      const tx = await Wallet.sendNative(CONFIG.presale.contractAddress, amountInput.value);
-      toast(`Transaction sent: ${Wallet.shortAddress(tx)}`, "success");
+      const account = Wallet.account;
+      const txHash = await Wallet.sendNative(CONFIG.presale.contractAddress, amountInput.value);
+      toast(`Transaction sent: ${Wallet.shortAddress(txHash)} — waiting for confirmation...`, "success");
+      creditPurchaseIfValid({
+        txHash,
+        account,
+        expectedWeiHex: Wallet.toWeiHex(amountInput.value),
+      });
     } catch (err) {
       toast(err.message || "Transaction failed", "error");
     } finally {

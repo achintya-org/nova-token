@@ -66,3 +66,31 @@ async function spendCoins(address, amount) {
     return current - amount;
   });
 }
+
+// Credits a verified real presale purchase to the same spendable balance used for
+// board bids. txHash is recorded in processedTx as a dedupe guard so the same
+// on-chain transaction can never be credited twice.
+async function creditNovaFromPurchase(address, novaAmount, txHash) {
+  if (!firestoreDb || !address || !txHash) return { credited: false, balance: 0 };
+  const userRef = firestoreDb.collection("users").doc(address.toLowerCase());
+  const txRef = firestoreDb.collection("processedTx").doc(txHash.toLowerCase());
+  try {
+    return await firestoreDb.runTransaction(async (tx) => {
+      const [userSnap, txSnap] = await Promise.all([tx.get(userRef), tx.get(txRef)]);
+      if (txSnap.exists) {
+        return { credited: false, balance: userSnap.exists ? userSnap.data().coins || 0 : 0 };
+      }
+      const current = userSnap.exists ? userSnap.data().coins || 0 : 0;
+      const next = current + novaAmount;
+      tx.set(userRef, { coins: next }, { merge: true });
+      tx.set(txRef, {
+        address: address.toLowerCase(),
+        novaCredited: novaAmount,
+        ts: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      return { credited: true, balance: next };
+    });
+  } catch {
+    return { credited: false, balance: 0 };
+  }
+}

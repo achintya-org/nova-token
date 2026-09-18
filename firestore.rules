@@ -11,5 +11,17 @@ service cloud.firestore {
       allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastSeenAt', 'connections', 'coins', 'lastCoinClaimAt']);
       allow delete: if false;
     }
+
+    match /processedTx/{txHash} {
+      // Dedupe guard for verified presale purchases: get lets the client check
+      // whether a tx hash was already credited; list stays closed so the whole
+      // transaction history can't be scraped. Once written, a record is immutable.
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.resource.data.keys().hasOnly(['address', 'novaCredited', 'ts'])
+                    && request.resource.data.novaCredited is number
+                    && request.resource.data.novaCredited >= 0;
+      allow update, delete: if false;
+    }
   }
 }
