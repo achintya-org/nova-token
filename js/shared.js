@@ -81,9 +81,13 @@ function initSharedChrome() {
       }
     })
   );
-  if (!Wallet.hasProvider()) {
-    connectBtns.forEach((b) => (b.textContent = "Install MetaMask"));
-  }
+  // EIP-6963 wallet announcements arrive asynchronously right after load, so give
+  // them a moment before deciding MetaMask truly isn't installed.
+  setTimeout(() => {
+    if (!Wallet.hasProvider()) {
+      connectBtns.forEach((b) => (b.textContent = "Install MetaMask"));
+    }
+  }, 250);
 
   const switchBtn = document.getElementById("switchChainBtn");
   if (switchBtn) {

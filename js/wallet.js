@@ -1,7 +1,39 @@
 const Wallet = (() => {
   let account = null;
   let chainIdHex = null;
+  let cachedProvider = null;
   const listeners = new Set();
+  const announced = new Map();
+
+  window.addEventListener("eip6963:announceProvider", (event) => {
+    const { info, provider } = event.detail || {};
+    if (info && provider) announced.set(info.rdns || info.uuid, { info, provider });
+  });
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+  function isMetaMaskProvider(p) {
+    return !!p && p.isMetaMask && !p.isBraveWallet;
+  }
+
+  function pickMetaMask(candidates) {
+    return candidates.find(isMetaMaskProvider) || null;
+  }
+
+  function getProvider() {
+    if (cachedProvider) return cachedProvider;
+
+    const fromEip6963 = pickMetaMask(Array.from(announced.values()).map((a) => a.provider));
+    if (fromEip6963) return (cachedProvider = fromEip6963);
+
+    const eth = window.ethereum;
+    if (!eth) return null;
+    if (Array.isArray(eth.providers) && eth.providers.length) {
+      const fromLegacyList = pickMetaMask(eth.providers);
+      if (fromLegacyList) return (cachedProvider = fromLegacyList);
+    }
+    if (isMetaMaskProvider(eth)) return (cachedProvider = eth);
+    return null;
+  }
 
   function onChange(fn) {
     listeners.add(fn);
@@ -13,7 +45,7 @@ const Wallet = (() => {
   }
 
   function hasProvider() {
-    return typeof window.ethereum !== "undefined";
+    return !!getProvider();
   }
 
   function isCorrectChain() {
@@ -21,13 +53,14 @@ const Wallet = (() => {
   }
 
   async function connect() {
-    if (!hasProvider()) {
+    const provider = getProvider();
+    if (!provider) {
       window.open("https://metamask.io/download/", "_blank", "noopener");
-      throw new Error("No wallet found — install MetaMask to continue.");
+      throw new Error("MetaMask not found — install it, or disable any other wallet extension that's intercepting the page.");
     }
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await provider.request({ method: "eth_requestAccounts" });
     account = accounts[0] || null;
-    chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+    chainIdHex = await provider.request({ method: "eth_chainId" });
     notify();
     return account;
   }
@@ -38,8 +71,9 @@ const Wallet = (() => {
   }
 
   async function getNativeBalance() {
-    if (!account || !hasProvider()) return null;
-    const wei = await window.ethereum.request({
+    const provider = getProvider();
+    if (!account || !provider) return null;
+    const wei = await provider.request({
       method: "eth_getBalance",
       params: [account, "latest"],
     });
@@ -63,14 +97,16 @@ const Wallet = (() => {
   }
 
   async function switchChain() {
+    const provider = getProvider();
+    if (!provider) throw new Error("MetaMask not found");
     try {
-      await window.ethereum.request({
+      await provider.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: CONFIG.chain.idHex }],
       });
     } catch (err) {
       if (err && err.code === 4902) {
-        await window.ethereum.request({
+        await provider.request({
           method: "wallet_addEthereumChain",
           params: [
             {
@@ -86,13 +122,14 @@ const Wallet = (() => {
         throw err;
       }
     }
-    chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+    chainIdHex = await provider.request({ method: "eth_chainId" });
     notify();
   }
 
   async function addTokenToWallet() {
-    if (!CONFIG.token.address) return false;
-    return window.ethereum.request({
+    const provider = getProvider();
+    if (!provider || !CONFIG.token.address) return false;
+    return provider.request({
       method: "wallet_watchAsset",
       params: {
         type: "ERC20",
@@ -106,7 +143,9 @@ const Wallet = (() => {
   }
 
   async function sendNative(toAddress, amountStr) {
-    return window.ethereum.request({
+    const provider = getProvider();
+    if (!provider) throw new Error("MetaMask not found");
+    return provider.request({
       method: "eth_sendTransaction",
       params: [
         {
@@ -123,22 +162,26 @@ const Wallet = (() => {
   }
 
   function init() {
-    if (!hasProvider()) return;
-    window.ethereum.request({ method: "eth_accounts" }).then(async (accounts) => {
-      if (accounts[0]) {
-        account = accounts[0];
-        chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+    // Give injected wallets a tick to announce themselves via EIP-6963 before resolving.
+    setTimeout(() => {
+      const provider = getProvider();
+      if (!provider) return;
+      provider.request({ method: "eth_accounts" }).then(async (accounts) => {
+        if (accounts[0]) {
+          account = accounts[0];
+          chainIdHex = await provider.request({ method: "eth_chainId" });
+          notify();
+        }
+      });
+      provider.on("accountsChanged", (accounts) => {
+        account = accounts[0] || null;
         notify();
-      }
-    });
-    window.ethereum.on("accountsChanged", (accounts) => {
-      account = accounts[0] || null;
-      notify();
-    });
-    window.ethereum.on("chainChanged", (id) => {
-      chainIdHex = id;
-      notify();
-    });
+      });
+      provider.on("chainChanged", (id) => {
+        chainIdHex = id;
+        notify();
+      });
+    }, 150);
   }
 
   return {
