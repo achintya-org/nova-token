@@ -7,6 +7,12 @@
       "**/.*",
       "**/node_modules/**",
       "README.md"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(html|css|js)",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache, max-age=0" }]
+      }
     ]
   }
 }
