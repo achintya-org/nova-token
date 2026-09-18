@@ -23,7 +23,7 @@ function normalizeUrl(url) {
 function renderMessageNode(msg, byParent, depth) {
   const children = byParent.get(msg.msgId) || [];
   const addr = msg.address ? Wallet.shortAddress(msg.address) : "anon";
-  const amountBadge = msg.amount ? `<span class="msg-amount">+${msg.amount} ${CONFIG.chain.nativeSymbol}</span>` : "";
+  const amountBadge = msg.amount ? `<span class="msg-amount">+${msg.amount} coin${msg.amount === 1 ? "" : "s"}</span>` : "";
   return `
     <div class="msg" style="margin-left:${Math.min(depth, 4) * 20}px">
       <div class="msg-head"><span class="msg-addr">${escHtml(addr)}</span>${amountBadge}</div>
@@ -82,13 +82,13 @@ function linkCardHtml(item, rank) {
           <a class="link-title" href="${escHtml(safeUrl)}" target="_blank" rel="noopener nofollow">${escHtml(p.title || item.url)}</a>
           <p class="link-desc">${escHtml(p.description || "")}</p>
           <div class="link-bid-row">
-            <span class="link-bid">${item.bid} ${CONFIG.chain.nativeSymbol} bid</span>
+            <span class="link-bid">${item.bid} coin${item.bid === 1 ? "" : "s"}</span>
             <button class="btn ghost small boost-btn" data-link-id="${item.linkId}">Boost this link</button>
           </div>
           <div class="boost-form hidden" data-boost-for="${item.linkId}">
-            <input class="field boost-amount" type="number" min="0" step="0.001" placeholder="Amount in ${CONFIG.chain.nativeSymbol}">
+            <input class="field boost-amount" type="number" min="1" step="1" placeholder="Coins to bid">
             <textarea class="field boost-message" maxlength="${Board.MAX_MESSAGE_LEN}" placeholder="Optional message (max 500 chars)"></textarea>
-            <button class="btn primary small boost-submit" data-link-id="${item.linkId}">Send Bid &amp; Boost</button>
+            <button class="btn primary small boost-submit" data-link-id="${item.linkId}">Spend Coins &amp; Boost</button>
           </div>
           <button class="link-btn small toggle-thread" data-link-id="${item.linkId}">View discussion</button>
           <div class="thread hidden" data-thread-for="${item.linkId}"></div>
@@ -124,17 +124,17 @@ async function renderBoard() {
   list.querySelectorAll(".boost-submit").forEach((btn) =>
     btn.addEventListener("click", async () => {
       if (!Wallet.account) return toast("Connect your wallet first", "error");
-      if (!Wallet.isCorrectChain()) return toast(`Switch to ${CONFIG.chain.name} first`, "error");
       const linkId = btn.dataset.linkId;
       const form = list.querySelector(`[data-boost-for="${linkId}"]`);
-      const amount = Number(form.querySelector(".boost-amount").value);
+      const amount = Math.floor(Number(form.querySelector(".boost-amount").value));
       const text = form.querySelector(".boost-message").value.trim();
-      if (!amount || amount <= 0) return toast("Enter a bid amount", "error");
+      if (!amount || amount <= 0) return toast("Enter a coin amount", "error");
       btn.disabled = true;
       try {
-        await Wallet.sendNative(CONFIG.presale.contractAddress, String(amount));
+        const remaining = await spendCoins(Wallet.account, amount);
         await Board.boostLink(linkId, { amount, address: Wallet.account, text });
-        toast("Bid sent and recorded", "success");
+        updateCoinDisplay(remaining);
+        toast("Coins spent and bid boosted", "success");
         await renderBoard();
       } catch (err) {
         toast(err.message || "Boost failed", "error");
@@ -158,25 +158,25 @@ function initBoardSubmit() {
 
   submitBtn.addEventListener("click", async () => {
     if (!Wallet.account) return toast("Connect your wallet first", "error");
-    if (!Wallet.isCorrectChain()) return toast(`Switch to ${CONFIG.chain.name} first`, "error");
     const url = urlInput.value.trim();
-    const amount = Number(amountInput.value);
+    const amount = Math.floor(Number(amountInput.value));
     const text = messageInput.value.trim();
     if (!isHttpUrl(url)) return toast("Enter a valid http(s) link", "error");
-    if (!amount || amount <= 0) return toast("Enter a bid amount", "error");
+    if (!amount || amount <= 0) return toast("Enter a coin amount", "error");
 
     submitBtn.disabled = true;
     try {
       const existing = await Board.fetchLinks();
       const match = existing.find((item) => normalizeUrl(item.url) === normalizeUrl(url));
-      await Wallet.sendNative(CONFIG.presale.contractAddress, String(amount));
+      const remaining = await spendCoins(Wallet.account, amount);
       if (match) {
         await Board.boostLink(match.linkId, { amount, address: Wallet.account, text });
-        toast("Bid added to existing link", "success");
+        toast("Coins added to existing link", "success");
       } else {
         await Board.createLink({ url, amount, address: Wallet.account, text });
         toast("Link submitted", "success");
       }
+      updateCoinDisplay(remaining);
       urlInput.value = "";
       amountInput.value = "";
       messageInput.value = "";

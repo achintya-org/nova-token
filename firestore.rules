@@ -2,10 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{walletId} {
-      allow read: if false;
+      // get (single doc, by known id) is needed by the client to read its own
+      // coin balance; list is blocked so the collection can't be scraped/dumped.
+      allow get: if true;
+      allow list: if false;
       allow create: if request.resource.data.address is string
-                    && request.resource.data.keys().hasOnly(['address', 'firstSeenAt', 'lastSeenAt', 'connections']);
-      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastSeenAt', 'connections']);
+                    && request.resource.data.keys().hasOnly(['address', 'firstSeenAt', 'lastSeenAt', 'connections', 'coins', 'lastCoinClaimAt']);
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastSeenAt', 'connections', 'coins', 'lastCoinClaimAt']);
       allow delete: if false;
     }
   }

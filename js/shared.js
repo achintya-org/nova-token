@@ -47,6 +47,13 @@ async function refreshWalletChip() {
   `;
 }
 
+function updateCoinDisplay(coins) {
+  const el = document.getElementById("coinBalance");
+  if (!el) return;
+  el.textContent = `${coins} coin${coins === 1 ? "" : "s"}`;
+  el.classList.remove("hidden");
+}
+
 function updateNetworkBanner() {
   const banner = document.getElementById("networkBanner");
   if (!banner) return;
@@ -106,7 +113,10 @@ function initSharedChrome() {
     updateNetworkBanner();
     if (account) {
       await refreshWalletChip();
-      recordUser(account);
+      await recordUser(account);
+      const { coins, claimed } = await claimDailyCoin(account);
+      if (claimed) toast("You claimed your free daily coin", "success");
+      updateCoinDisplay(coins);
     }
   });
 

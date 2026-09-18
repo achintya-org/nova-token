@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=7">
+<link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -55,19 +55,20 @@
 
     <section id="board" class="section board-section">
       <p class="hint board-intro">
-        Connect your wallet, submit a link, and send a bid directly to the presale wallet
-        to rank it. Anyone can add to an existing link's bid to push it higher. Bid totals
-        are self-reported by whoever sends them and are not independently verified
-        on-chain — the team reviews and removes fraudulent entries manually.
+        Everyone gets 1 free coin per day just for connecting their wallet — no payment
+        required. Submit a link and back it with coins to rank it; anyone can add coins
+        to an existing link to push it higher. Coin totals are self-reported and not
+        independently verified — the team reviews and removes fraudulent entries manually.
       </p>
+      <p class="hint coin-balance-row">Your balance: <strong id="coinBalance" class="hidden">0 coins</strong></p>
 
       <div class="board-submit">
         <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
-        <input id="boardAmount" class="field" type="number" min="0" step="0.001" placeholder="Bid amount in ETH">
+        <input id="boardAmount" class="field" type="number" min="1" step="1" placeholder="Coins to bid">
         <textarea id="boardMessage" class="field" maxlength="500" placeholder="Optional message (max 500 chars)"></textarea>
         <div class="board-submit-row">
           <span class="hint" id="boardMessageCount">0/500</span>
-          <button id="boardSubmit" class="btn primary">Submit &amp; Send Bid</button>
+          <button id="boardSubmit" class="btn primary">Submit &amp; Spend Coins</button>
         </div>
       </div>
 
@@ -86,14 +87,14 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=7"></script>
+  <script src="js/config.js?v=8"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="js/users.js?v=7"></script>
-  <script src="js/wallet.js?v=7"></script>
-  <script src="js/ui.js?v=7"></script>
-  <script src="js/shared.js?v=7"></script>
-  <script src="js/board.js?v=7"></script>
-  <script src="js/board-ui.js?v=7"></script>
+  <script src="js/users.js?v=8"></script>
+  <script src="js/wallet.js?v=8"></script>
+  <script src="js/ui.js?v=8"></script>
+  <script src="js/shared.js?v=8"></script>
+  <script src="js/board.js?v=8"></script>
+  <script src="js/board-ui.js?v=8"></script>
 </body>
 </html>
