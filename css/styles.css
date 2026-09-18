@@ -226,12 +226,34 @@ a:hover { text-decoration: underline; }
 .frame-title { color: var(--gold); font-size: 22px; font-weight: 700; font-family: "Space Grotesk", sans-serif; margin: 0 0 8px; }
 .frame-sub { color: var(--text-dim); font-size: 14px; margin: 0; }
 .frame-divider { height: 1px; background: var(--border); margin: 20px 0; }
-.team-contact {
-  display: inline-block;
-  color: var(--text);
+.team-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--bg);
+  background: var(--gold);
   font-size: 14px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
 }
-.team-contact strong { color: var(--gold); }
+.team-contact-btn:hover { background: var(--primary-hover); text-decoration: none; }
+.team-contact-btn strong { color: var(--bg); }
+.team-contact-btn svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  border: 1px solid var(--gold-dim);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+.contact-pill:hover { border-color: var(--gold); color: var(--gold); text-decoration: none; }
+.contact-pill svg { width: 14px; height: 14px; fill: var(--gold); flex-shrink: 0; }
 
 .hero-grid {
   max-width: 1140px;
@@ -546,6 +568,11 @@ a:hover { text-decoration: underline; }
   .nav-menu a { margin: 0; padding: 12px 20px; width: 100%; }
   .nav-toggle { display: flex; }
   .tokenomics-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  #navContact span, #navContact { font-size: 0; padding: 8px; }
+  #navContact svg { width: 16px; height: 16px; }
 }
 
 @media (max-width: 480px) {

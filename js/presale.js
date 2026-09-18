@@ -20,13 +20,19 @@ function renderSocialLinks() {
 }
 
 function renderTeamContact() {
-  const el = document.getElementById("teamContact");
-  if (!el || !CONFIG.contact || !CONFIG.contact.url) {
-    if (el) el.classList.add("hidden");
-    return;
-  }
-  el.href = CONFIG.contact.url;
-  el.innerHTML = `${CONFIG.contact.label}: <strong>${CONFIG.contact.handle}</strong>`;
+  const targets = [
+    { el: document.getElementById("teamContact"), html: (c) => `${SOCIAL_ICONS.telegram} ${c.label}: <strong>${c.handle}</strong>` },
+    { el: document.getElementById("navContact"), html: (c) => `${SOCIAL_ICONS.telegram} <strong>${c.handle}</strong>` },
+  ];
+  targets.forEach(({ el, html }) => {
+    if (!el) return;
+    if (!CONFIG.contact || !CONFIG.contact.url) {
+      el.classList.add("hidden");
+      return;
+    }
+    el.href = CONFIG.contact.url;
+    el.innerHTML = html(CONFIG.contact);
+  });
 }
 
 function renderTokenomics() {
