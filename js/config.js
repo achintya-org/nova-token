@@ -14,7 +14,7 @@ const CONFIG = {
     symbol: "NOVA",
     decimals: 18,
     address: "", // TODO: set once the token contract is deployed
-    totalSupply: 1_000_000_000,
+    totalSupply: 20_000_000,
     initialLiquidity: 200,
   },
   presale: {
