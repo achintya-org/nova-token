@@ -84,8 +84,19 @@ function initSharedChrome() {
   // EIP-6963 wallet announcements arrive asynchronously right after load, so give
   // them a moment before deciding MetaMask truly isn't installed.
   setTimeout(() => {
-    if (!Wallet.hasProvider()) {
+    const mmLinks = document.querySelectorAll(".js-mm-link");
+    if (Wallet.hasProvider()) {
+      // Real MetaMask found — "Connect Wallet" works, so the separate link is redundant.
+      mmLinks.forEach((a) => (a.closest("p.hint") || a).classList.add("hidden"));
+    } else {
       connectBtns.forEach((b) => (b.textContent = "Install MetaMask"));
+      const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+      if (!isMobile) {
+        // metamask.app.link only knows how to open the mobile app; on desktop it
+        // just shows a download prompt even if the extension is installed under a
+        // different detection path, so point desktop visitors at the extension page.
+        mmLinks.forEach((a) => (a.href = "https://metamask.io/download/"));
+      }
     }
   }, 250);
 

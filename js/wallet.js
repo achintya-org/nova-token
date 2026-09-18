@@ -12,23 +12,32 @@ const Wallet = (() => {
   window.dispatchEvent(new Event("eip6963:requestProvider"));
 
   function isMetaMaskProvider(p) {
-    return !!p && p.isMetaMask && !p.isBraveWallet;
-  }
-
-  function pickMetaMask(candidates) {
-    return candidates.find(isMetaMaskProvider) || null;
+    return !!p && p.isMetaMask && !p.isBraveWallet && !p.isRabby;
   }
 
   function getProvider() {
     if (cachedProvider) return cachedProvider;
 
-    const fromEip6963 = pickMetaMask(Array.from(announced.values()).map((a) => a.provider));
-    if (fromEip6963) return (cachedProvider = fromEip6963);
+    // EIP-6963: every wallet announces its own identity (info.rdns), which is not
+    // spoofable the way the legacy provider.isMetaMask flag is (Rabby, Binance
+    // Wallet, etc. all set isMetaMask=true on themselves for compatibility).
+    // Real MetaMask always announces rdns "io.metamask" — match on that first.
+    for (const { info, provider } of announced.values()) {
+      if (info && info.rdns && info.rdns.toLowerCase() === "io.metamask") {
+        return (cachedProvider = provider);
+      }
+    }
+    // Fall back to name matching if rdns is missing but clearly identifies MetaMask.
+    for (const { info, provider } of announced.values()) {
+      if (info && /^metamask$/i.test(info.name || "") && isMetaMaskProvider(provider)) {
+        return (cachedProvider = provider);
+      }
+    }
 
     const eth = window.ethereum;
     if (!eth) return null;
     if (Array.isArray(eth.providers) && eth.providers.length) {
-      const fromLegacyList = pickMetaMask(eth.providers);
+      const fromLegacyList = eth.providers.find(isMetaMaskProvider);
       if (fromLegacyList) return (cachedProvider = fromLegacyList);
     }
     if (isMetaMaskProvider(eth)) return (cachedProvider = eth);
