@@ -250,7 +250,10 @@ document.addEventListener("DOMContentLoaded", () => {
   Wallet.onChange(async ({ account }) => {
     setConnectedUI(!!account);
     updateNetworkBanner();
-    if (account) await refreshWalletChip();
+    if (account) {
+      await refreshWalletChip();
+      recordUser(account);
+    }
   });
 
   document.getElementById("walletChip").addEventListener("click", () => {

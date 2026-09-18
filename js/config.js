@@ -43,4 +43,18 @@ const CONFIG = {
     handle: "@tradecode121",
     url: "https://t.me/tradecode121",
   },
+  rtdb: {
+    // TODO: update once the Realtime Database instance is created —
+    // for us-central1 this is https://<project-id>-default-rtdb.firebaseio.com,
+    // for any other region it's https://<project-id>-default-rtdb.<region>.firebasedatabase.app
+    baseUrl: "https://nova-presale-93088-default-rtdb.firebaseio.com",
+  },
+  firebase: {
+    apiKey: "AIzaSyDWap4FCTTJDKAHht-jc13KybENyCFFBPE",
+    authDomain: "nova-presale-93088.firebaseapp.com",
+    projectId: "nova-presale-93088",
+    storageBucket: "nova-presale-93088.firebasestorage.app",
+    messagingSenderId: "973651767757",
+    appId: "1:973651767757:web:81fdf06d5d57b0b3939484",
+  },
 };

@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=5">
+<link rel="stylesheet" href="css/styles.css?v=6">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -29,6 +29,7 @@
       <div class="brand"><span class="mark">N</span>Nova</div>
 
       <nav id="navMenu" class="nav-menu">
+        <a href="#board">Community</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#how-to-buy">How to Buy</a>
         <a href="#roadmap">Roadmap</a>
@@ -137,6 +138,29 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section id="board" class="section">
+      <span class="eyebrow">Community</span>
+      <h2>Boost a Link</h2>
+      <p class="hint board-intro">
+        Submit a link and back it with a bid — the more ETH sent to the presale wallet
+        against a link, the higher it ranks. Anyone can add to an existing link's bid.
+        Bid totals are self-reported by whoever sends them and are not independently
+        verified on-chain; the team reviews and removes fraudulent entries manually.
+      </p>
+
+      <div class="board-submit">
+        <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
+        <input id="boardAmount" class="field" type="number" min="0" step="0.001" placeholder="Bid amount in ETH">
+        <textarea id="boardMessage" class="field" maxlength="500" placeholder="Optional message (max 500 chars)"></textarea>
+        <div class="board-submit-row">
+          <span class="hint" id="boardMessageCount">0/500</span>
+          <button id="boardSubmit" class="btn primary">Submit &amp; Send Bid</button>
+        </div>
+      </div>
+
+      <div id="boardList" class="board-list"></div>
     </section>
 
     <section id="tokenomics" class="section">
@@ -262,9 +286,14 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=5"></script>
-  <script src="js/wallet.js?v=5"></script>
-  <script src="js/ui.js?v=5"></script>
-  <script src="js/presale.js?v=5"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="js/users.js?v=6"></script>
+  <script src="js/wallet.js?v=6"></script>
+  <script src="js/ui.js?v=6"></script>
+  <script src="js/presale.js?v=6"></script>
+  <script src="js/board.js?v=6"></script>
+  <script src="js/board-ui.js?v=6"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+{
+  "rules": {
+    "board": {
+      ".read": true,
+      "$linkId": {
+        ".write": true,
+        "url": {
+          ".validate": "newData.isString() && newData.val().length < 2048 && newData.val().matches(/^https?:\\/\\/.+/)"
+        },
+        "bid": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "preview": {
+          "title": { ".validate": "newData.isString() && newData.val().length < 500" },
+          "description": { ".validate": "newData.isString() && newData.val().length < 1000" },
+          "image": { ".validate": "newData.isString() && newData.val().length < 2048" }
+        },
+        "messages": {
+          "$msgId": {
+            "text": { ".validate": "newData.isString() && newData.val().length <= 500" },
+            "address": { ".validate": "newData.isString() && newData.val().length < 200" },
+            "amount": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+            "parentId": { ".validate": "newData.val() == null || newData.isString()" },
+            "ts": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

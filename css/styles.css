@@ -509,6 +509,64 @@ a:hover { text-decoration: underline; }
 .roadmap strong { display: block; font-size: 15px; margin-bottom: 4px; }
 .roadmap p { color: var(--text-dim); font-size: 13px; margin: 0; line-height: 1.5; }
 
+/* Board */
+.board-intro { max-width: 640px; margin-bottom: 24px; }
+.board-submit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.board-submit textarea.field { resize: vertical; min-height: 70px; }
+.board-submit-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.board-list { display: flex; flex-direction: column; gap: 14px; }
+.link-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  gap: 14px;
+}
+.link-rank {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 34px;
+}
+.link-body { display: flex; gap: 14px; flex: 1; min-width: 0; }
+.link-image { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+.link-meta { flex: 1; min-width: 0; }
+.link-title { font-weight: 600; font-size: 15px; display: block; word-break: break-word; }
+.link-desc { color: var(--text-dim); font-size: 13px; margin: 4px 0 10px; }
+.link-bid-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.link-bid { font-weight: 700; color: var(--gold); font-size: 13px; }
+
+.boost-form, .board-submit { }
+.boost-form { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.boost-form textarea.field { min-height: 50px; }
+
+.thread { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+.msg { margin-bottom: 12px; }
+.msg-head { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.msg-addr { font-family: ui-monospace, Menlo, monospace; color: var(--text-dim); }
+.msg-amount { color: var(--gold); font-weight: 600; }
+.msg-text { font-size: 13px; margin: 4px 0 6px; }
+.reply-form { display: flex; flex-direction: column; gap: 6px; margin: 6px 0; }
+.reply-form textarea.field { min-height: 44px; }
+
+@media (max-width: 560px) {
+  .link-body { flex-direction: column; }
+  .link-image { width: 100%; height: 140px; }
+}
+
 /* FAQ */
 #faq details {
   background: var(--surface);

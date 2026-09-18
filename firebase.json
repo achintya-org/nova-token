@@ -1,9 +1,17 @@
 {
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "hosting": {
     "site": "novapresale",
     "public": ".",
     "ignore": [
       "firebase.json",
+      "database.rules.json",
+      "firestore.rules",
       "**/.*",
       "**/node_modules/**",
       "README.md"
