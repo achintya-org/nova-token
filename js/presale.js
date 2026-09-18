@@ -32,6 +32,7 @@ function renderTokenomics() {
   document.getElementById("totalSupply").textContent = CONFIG.token.totalSupply.toLocaleString();
   document.getElementById("tokenSymbol").textContent = CONFIG.token.symbol;
   document.getElementById("presaleRate").textContent = `1 ${CONFIG.chain.nativeSymbol} = ${CONFIG.presale.rate.toLocaleString()} ${CONFIG.token.symbol}`;
+  document.getElementById("initialLiquidity").textContent = `${CONFIG.token.initialLiquidity.toLocaleString()} ${CONFIG.token.symbol}`;
 
   const tokenAddrEl = document.getElementById("tokenContractAddress");
   tokenAddrEl.textContent = CONFIG.token.address || "Not deployed yet";

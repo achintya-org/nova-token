@@ -15,12 +15,11 @@ const CONFIG = {
     decimals: 18,
     address: "", // TODO: set once the token contract is deployed
     totalSupply: 1_000_000_000,
+    initialLiquidity: 200,
   },
   presale: {
     contractAddress: "0x44F5B3B99164A93Ea0c38C80AC01b7805DFd4aA8",
-    // 25% of the 1,000,000,000 supply (250,000,000 NOVA) sold for a 100 ETH hard cap
-    // => rate = 250,000,000 / 100 = 2,500,000 NOVA per 1 ETH.
-    rate: 2_500_000,
+    rate: 2000, // 1 ETH = 2000 NOVA
     minBuyNative: 0.05,
     maxBuyNative: 5,
     hardCapNative: 100,
