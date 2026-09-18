@@ -25,15 +25,20 @@ const CONFIG = {
     endsAt: null, // TODO: set an ISO date string to enable the countdown
   },
   tokenomics: [
-    { label: "Presale", pct: 40, color: "#7c6cff" },
-    { label: "Liquidity", pct: 25, color: "#35e0c1" },
-    { label: "Team (vested)", pct: 15, color: "#ffb454" },
-    { label: "Marketing", pct: 10, color: "#ff6b6b" },
-    { label: "Reserve", pct: 10, color: "#5eb1ff" },
+    { label: "Presale", pct: 40, color: "#f0b429" },
+    { label: "Liquidity", pct: 25, color: "#8b7cff" },
+    { label: "Team (vested)", pct: 15, color: "#e8845a" },
+    { label: "Marketing", pct: 10, color: "#5fb0d9" },
+    { label: "Reserve", pct: 10, color: "#6b7280" },
   ],
   social: {
     twitter: "",
-    telegram: "",
+    telegram: "https://t.me/tradecode121",
     discord: "",
+  },
+  contact: {
+    label: "Message the team on Telegram",
+    handle: "@tradecode121",
+    url: "https://t.me/tradecode121",
   },
 };

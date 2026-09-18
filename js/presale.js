@@ -19,6 +19,16 @@ function renderSocialLinks() {
     .join("");
 }
 
+function renderTeamContact() {
+  const el = document.getElementById("teamContact");
+  if (!el || !CONFIG.contact || !CONFIG.contact.url) {
+    if (el) el.classList.add("hidden");
+    return;
+  }
+  el.href = CONFIG.contact.url;
+  el.innerHTML = `${CONFIG.contact.label}: <strong>${CONFIG.contact.handle}</strong>`;
+}
+
 function renderTokenomics() {
   const chart = document.getElementById("tokenomicsChart");
   const legend = document.getElementById("tokenomicsLegend");
@@ -57,11 +67,12 @@ function renderTokenomics() {
   document.getElementById("chainNameFaq").textContent = CONFIG.chain.name;
 
   document.getElementById("statSupply").textContent = formatCompact(CONFIG.token.totalSupply);
-  document.getElementById("statRate").textContent = `${CONFIG.presale.rate.toLocaleString()} ${CONFIG.token.symbol}`;
+  document.getElementById("stageRate").textContent = `1 ${CONFIG.chain.nativeSymbol} = ${CONFIG.presale.rate.toLocaleString()} ${CONFIG.token.symbol}`;
   document.getElementById("statHardCap").textContent = `${CONFIG.presale.hardCapNative} ${CONFIG.chain.nativeSymbol}`;
   document.getElementById("statChain").textContent = CONFIG.chain.name;
 
   renderSocialLinks();
+  renderTeamContact();
 
   const walletEl = document.getElementById("presaleWalletAddress");
   const explorerEl = document.getElementById("presaleWalletExplorer");
@@ -113,6 +124,8 @@ function estimateTokens(amountNative) {
 
 function setConnectedUI(connected) {
   document.getElementById("connectBtn").classList.toggle("hidden", connected);
+  const heroConnect = document.getElementById("connectBtnHero");
+  if (heroConnect) heroConnect.classList.toggle("hidden", connected);
   document.getElementById("walletChip").classList.toggle("hidden", !connected);
   document.getElementById("buyForm").classList.toggle("disabled-panel", !connected);
 }
@@ -146,7 +159,7 @@ function initBuyWidget() {
   const amountInput = document.getElementById("buyAmount");
   const estimateOut = document.getElementById("buyEstimate");
   const buyBtn = document.getElementById("buyBtn");
-  const connectBtn = document.getElementById("connectBtn");
+  const connectBtns = [document.getElementById("connectBtn"), document.getElementById("connectBtnHero")].filter(Boolean);
   const switchBtn = document.getElementById("switchChainBtn");
   const addTokenBtn = document.getElementById("addTokenBtn");
 
@@ -154,17 +167,19 @@ function initBuyWidget() {
     estimateOut.textContent = `${estimateTokens(amountInput.value).toLocaleString()} ${CONFIG.token.symbol}`;
   });
 
-  connectBtn.addEventListener("click", async () => {
-    connectBtn.disabled = true;
-    try {
-      await Wallet.connect();
-      toast("Wallet connected", "success");
-    } catch (err) {
-      toast(err.message || "Couldn't connect wallet", "error");
-    } finally {
-      connectBtn.disabled = false;
-    }
-  });
+  connectBtns.forEach((btn) =>
+    btn.addEventListener("click", async () => {
+      connectBtns.forEach((b) => (b.disabled = true));
+      try {
+        await Wallet.connect();
+        toast("Wallet connected", "success");
+      } catch (err) {
+        toast(err.message || "Couldn't connect wallet", "error");
+      } finally {
+        connectBtns.forEach((b) => (b.disabled = false));
+      }
+    })
+  );
 
   switchBtn.addEventListener("click", async () => {
     try {

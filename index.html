@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a0b0d">
+<meta name="theme-color" content="#07060d">
 <title>Nova ($NOVA) — Presale</title>
 <meta name="description" content="Nova ($NOVA) token presale — connect your wallet, review tokenomics, and join early.">
 <meta property="og:title" content="Nova ($NOVA) — Presale">
 <meta property="og:description" content="Nova ($NOVA) token presale — connect your wallet, review tokenomics, and join early.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23635BFF'/%3E%3Cpath d='M9 22V10h2.6l7.8 8.6V10H22v12h-2.6l-7.8-8.6V22H9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314111f'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23f0b429' stroke-width='2'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='16' fill='%23f0b429'%3EN%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=2">
+<link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -47,32 +47,75 @@
   </header>
 
   <main>
+    <div class="starfield" aria-hidden="true"></div>
+
     <section class="hero">
-      <div class="hero-inner">
-        <span class="badge">Presale · Phase 1</span>
-        <h1>Nova <span class="ticker">$NOVA</span></h1>
-        <p class="lede">
-          Connect your wallet and join the Nova presale. Deposits go directly
-          to the presale wallet published below — the NOVA token contract
-          itself hasn't been deployed yet, so tokens are distributed at TGE.
-        </p>
+      <div class="hero-frame">
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+        <p class="frame-title">Presale Is Live</p>
+        <p class="frame-sub">Verify the wallet address on this page before every transaction</p>
+        <div class="frame-divider"></div>
+        <a id="teamContact" class="team-contact" target="_blank" rel="noopener"></a>
+      </div>
 
-        <div class="stat-row">
-          <div class="stat"><span class="stat-v" id="statSupply">—</span><span class="stat-k">Total Supply</span></div>
-          <div class="stat"><span class="stat-v" id="statRate">—</span><span class="stat-k">Rate</span></div>
-          <div class="stat"><span class="stat-v" id="statHardCap">—</span><span class="stat-k">Hard Cap</span></div>
-          <div class="stat"><span class="stat-v" id="statChain">—</span><span class="stat-k">Network</span></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1><span class="accent-line">Nova</span><span class="light-line">$NOVA Presale</span></h1>
+          <p class="lede">
+            Connect your wallet and join the Nova presale. Deposits go directly
+            to the presale wallet published below — the NOVA token contract
+            itself hasn't been deployed yet, so tokens are distributed at TGE.
+          </p>
+          <div class="hero-cta">
+            <button id="connectBtnHero" class="btn primary">Connect Wallet</button>
+            <a href="#tokenomics" class="btn ghost">View Tokenomics</a>
+          </div>
+
+          <div class="coin-wrap" aria-hidden="true">
+            <svg viewBox="0 0 200 200" class="coin">
+              <defs>
+                <radialGradient id="coinGlow" cx="50%" cy="45%" r="60%">
+                  <stop offset="0%" stop-color="#3a2f12"/>
+                  <stop offset="100%" stop-color="#14111f"/>
+                </radialGradient>
+              </defs>
+              <circle cx="100" cy="100" r="92" fill="url(#coinGlow)" stroke="#f0b429" stroke-width="3"/>
+              <circle cx="100" cy="100" r="78" fill="none" stroke="#f0b429" stroke-width="1" opacity="0.5"/>
+              <g stroke="#f0b429" stroke-width="2" opacity="0.6">
+                <line x1="100" y1="8" x2="100" y2="20"/>
+                <line x1="100" y1="180" x2="100" y2="192"/>
+                <line x1="8" y1="100" x2="20" y2="100"/>
+                <line x1="180" y1="100" x2="192" y2="100"/>
+                <line x1="34" y1="34" x2="42" y2="42"/>
+                <line x1="158" y1="158" x2="166" y2="166"/>
+                <line x1="34" y1="166" x2="42" y2="158"/>
+                <line x1="158" y1="42" x2="166" y2="34"/>
+              </g>
+              <text x="100" y="115" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="40" fill="#f0b429">N</text>
+            </svg>
+          </div>
         </div>
 
-        <div id="countdown" class="countdown" aria-live="polite">
-          <div class="unit"><span id="cd-d">--</span><label>days</label></div>
-          <div class="unit"><span id="cd-h">--</span><label>hrs</label></div>
-          <div class="unit"><span id="cd-m">--</span><label>min</label></div>
-          <div class="unit"><span id="cd-s">--</span><label>sec</label></div>
-        </div>
-        <p id="countdownTba" class="hint hidden">Presale date to be announced.</p>
+        <div class="stage-card">
+          <p class="stage-label">Presale · Phase 1</p>
+          <p class="stage-rate" id="stageRate">—</p>
 
-        <div class="buy-card">
+          <div class="stat-row">
+            <div class="stat"><span class="stat-v" id="statSupply">—</span><span class="stat-k">Total Supply</span></div>
+            <div class="stat"><span class="stat-v" id="statHardCap">—</span><span class="stat-k">Hard Cap</span></div>
+            <div class="stat"><span class="stat-v" id="statChain">—</span><span class="stat-k">Network</span></div>
+          </div>
+
+          <p class="stage-sub">Presale ends in</p>
+          <div id="countdown" class="countdown" aria-live="polite">
+            <div class="unit"><span id="cd-d">--</span><label>days</label></div>
+            <div class="unit"><span id="cd-h">--</span><label>hrs</label></div>
+            <div class="unit"><span id="cd-m">--</span><label>min</label></div>
+            <div class="unit"><span id="cd-s">--</span><label>sec</label></div>
+          </div>
+          <p id="countdownTba" class="hint hidden">Presale date to be announced.</p>
+
           <div class="progress-row">
             <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
             <div class="progress-labels">
@@ -92,8 +135,6 @@
             <p class="hint" id="minMaxHint"></p>
           </div>
         </div>
-
-        <p class="hint">Presale deposits are live. Always verify the presale wallet address below before sending funds.</p>
       </div>
     </section>
 
@@ -220,9 +261,9 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=2"></script>
-  <script src="js/wallet.js?v=2"></script>
-  <script src="js/ui.js?v=2"></script>
-  <script src="js/presale.js?v=2"></script>
+  <script src="js/config.js?v=3"></script>
+  <script src="js/wallet.js?v=3"></script>
+  <script src="js/ui.js?v=3"></script>
+  <script src="js/presale.js?v=3"></script>
 </body>
 </html>
