@@ -128,6 +128,8 @@ async function renderProgress() {
   document.getElementById("hardCapAmount").textContent = `${CONFIG.presale.hardCapNative} ${CONFIG.chain.nativeSymbol}`;
   document.getElementById("minMaxHint").textContent =
     `Min ${CONFIG.presale.minBuyNative} · Max ${CONFIG.presale.maxBuyNative} ${CONFIG.chain.nativeSymbol}`;
+  document.getElementById("initialLiquidityInline").textContent =
+    `${CONFIG.token.initialLiquidity.toLocaleString()} ${CONFIG.token.symbol}`;
 }
 
 function estimateTokens(amountNative) {

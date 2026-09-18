@@ -389,6 +389,8 @@ a:hover { text-decoration: underline; }
 .hint { color: var(--text-dim); font-size: 13px; margin: 10px 0 0; line-height: 1.5; }
 
 .progress-row { margin-bottom: 18px; }
+.liquidity-note { margin: 8px 0 0; text-align: right; }
+.liquidity-note strong { color: var(--gold); }
 .progress-track {
   height: 8px;
   background: var(--surface-2);
