@@ -163,24 +163,31 @@ const Wallet = (() => {
 
   function init() {
     // Give injected wallets a tick to announce themselves via EIP-6963 before resolving.
-    setTimeout(() => {
+    setTimeout(async () => {
       const provider = getProvider();
       if (!provider) return;
-      provider.request({ method: "eth_accounts" }).then(async (accounts) => {
+      try {
+        const accounts = await provider.request({ method: "eth_accounts" });
         if (accounts[0]) {
           account = accounts[0];
           chainIdHex = await provider.request({ method: "eth_chainId" });
           notify();
         }
-      });
-      provider.on("accountsChanged", (accounts) => {
-        account = accounts[0] || null;
-        notify();
-      });
-      provider.on("chainChanged", (id) => {
-        chainIdHex = id;
-        notify();
-      });
+      } catch {
+        // Wallet not ready/unlocked yet — the user can still click Connect manually.
+      }
+      try {
+        provider.on("accountsChanged", (accounts) => {
+          account = accounts[0] || null;
+          notify();
+        });
+        provider.on("chainChanged", (id) => {
+          chainIdHex = id;
+          notify();
+        });
+      } catch {
+        // Some non-standard providers don't support event subscriptions.
+      }
     }, 150);
   }
 
