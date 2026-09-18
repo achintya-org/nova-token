@@ -1,3 +1,24 @@
+function formatCompact(n) {
+  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(n % 1_000_000_000 === 0 ? 0 : 1)}B`;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1)}K`;
+  return String(n);
+}
+
+const SOCIAL_ICONS = {
+  twitter: '<svg viewBox="0 0 24 24"><path d="M18.9 3H22l-7.6 8.7L23.4 21H16.9l-5.1-6.6L6 21H2.9l8.1-9.3L1.7 3h6.7l4.6 6.1L18.9 3zm-1.1 16.2h1.7L7.3 4.7H5.5l12.3 14.5z"/></svg>',
+  telegram: '<svg viewBox="0 0 24 24"><path d="M21.9 4.7 18.7 20c-.2 1.1-.9 1.3-1.8.8l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.3-8.4c.4-.4-.1-.6-.6-.2L6.5 13.1 1.6 11.6c-1.1-.3-1.1-1.1.2-1.6L20.5 3.5c.9-.3 1.7.2 1.4 1.2z"/></svg>',
+  discord: '<svg viewBox="0 0 24 24"><path d="M20.3 5.3A18 18 0 0 0 15.9 4l-.3.6a15 15 0 0 1 3.8 1.3 16 16 0 0 0-14.8 0A15 15 0 0 1 8.4 4.6L8.1 4a18 18 0 0 0-4.4 1.3C1.4 9.3.8 13.2 1.1 17a18 18 0 0 0 5.4 2.7l.8-1.3a12 12 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11.2 0l.5.4c-.6.3-1.2.6-1.9.9l.8 1.3a18 18 0 0 0 5.4-2.7c.4-4.4-.6-8.3-2.6-11.7zM8.6 14.6c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8zm6.8 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8z"/></svg>',
+};
+
+function renderSocialLinks() {
+  const host = document.getElementById("socialLinks");
+  host.innerHTML = Object.entries(CONFIG.social)
+    .filter(([, url]) => url)
+    .map(([name, url]) => `<a href="${url}" target="_blank" rel="noopener" aria-label="${name}">${SOCIAL_ICONS[name] || ""}</a>`)
+    .join("");
+}
+
 function renderTokenomics() {
   const chart = document.getElementById("tokenomicsChart");
   const legend = document.getElementById("tokenomicsLegend");
@@ -34,6 +55,13 @@ function renderTokenomics() {
   document.getElementById("chainSymbolLabel").textContent = CONFIG.chain.nativeSymbol;
   document.getElementById("chainNameHowTo").textContent = CONFIG.chain.name;
   document.getElementById("chainNameFaq").textContent = CONFIG.chain.name;
+
+  document.getElementById("statSupply").textContent = formatCompact(CONFIG.token.totalSupply);
+  document.getElementById("statRate").textContent = `${CONFIG.presale.rate.toLocaleString()} ${CONFIG.token.symbol}`;
+  document.getElementById("statHardCap").textContent = `${CONFIG.presale.hardCapNative} ${CONFIG.chain.nativeSymbol}`;
+  document.getElementById("statChain").textContent = CONFIG.chain.name;
+
+  renderSocialLinks();
 
   const walletEl = document.getElementById("presaleWalletAddress");
   const explorerEl = document.getElementById("presaleWalletExplorer");

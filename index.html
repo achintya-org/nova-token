@@ -3,14 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b0e14">
+<meta name="theme-color" content="#0a0b0d">
 <title>Nova ($NOVA) — Presale</title>
 <meta name="description" content="Nova ($NOVA) token presale — connect your wallet, review tokenomics, and join early.">
 <meta property="og:title" content="Nova ($NOVA) — Presale">
 <meta property="og:description" content="Nova ($NOVA) token presale — connect your wallet, review tokenomics, and join early.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c6cff'/%3E%3Cstop offset='1' stop-color='%2335e0c1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='16' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23635BFF'/%3E%3Cpath d='M9 22V10h2.6l7.8 8.6V10H22v12h-2.6l-7.8-8.6V22H9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -23,12 +26,13 @@
 
   <header class="nav">
     <div class="nav-inner">
-      <div class="brand"><span class="dot"></span> Nova</div>
+      <div class="brand"><span class="mark">N</span>Nova</div>
 
       <nav id="navMenu" class="nav-menu">
         <a href="#tokenomics">Tokenomics</a>
         <a href="#how-to-buy">How to Buy</a>
         <a href="#roadmap">Roadmap</a>
+        <a href="#security">Security</a>
         <a href="#faq">FAQ</a>
       </nav>
 
@@ -46,12 +50,19 @@
     <section class="hero">
       <div class="hero-inner">
         <span class="badge">Presale · Phase 1</span>
-        <h1>Nova <span class="ticker">($NOVA)</span></h1>
+        <h1>Nova <span class="ticker">$NOVA</span></h1>
         <p class="lede">
           Connect your wallet and join the Nova presale. Deposits go directly
           to the presale wallet published below — the NOVA token contract
           itself hasn't been deployed yet, so tokens are distributed at TGE.
         </p>
+
+        <div class="stat-row">
+          <div class="stat"><span class="stat-v" id="statSupply">—</span><span class="stat-k">Total Supply</span></div>
+          <div class="stat"><span class="stat-v" id="statRate">—</span><span class="stat-k">Rate</span></div>
+          <div class="stat"><span class="stat-v" id="statHardCap">—</span><span class="stat-k">Hard Cap</span></div>
+          <div class="stat"><span class="stat-v" id="statChain">—</span><span class="stat-k">Network</span></div>
+        </div>
 
         <div id="countdown" class="countdown" aria-live="polite">
           <div class="unit"><span id="cd-d">--</span><label>days</label></div>
@@ -87,7 +98,8 @@
     </section>
 
     <section id="tokenomics" class="section">
-      <h2>Tokenomics</h2>
+      <span class="eyebrow">Tokenomics</span>
+      <h2>Token Allocation &amp; Details</h2>
       <div class="tokenomics-grid">
         <div class="chart-wrap">
           <div id="tokenomicsChart" class="donut"></div>
@@ -115,27 +127,69 @@
     </section>
 
     <section id="how-to-buy" class="section">
+      <span class="eyebrow">Get Started</span>
       <h2>How to Buy</h2>
       <div class="steps">
-        <div class="step"><span class="step-n">1</span><h3>Connect wallet</h3><p>Click Connect Wallet and approve the connection in MetaMask.</p></div>
-        <div class="step"><span class="step-n">2</span><h3>Switch network</h3><p>Make sure you're on <span id="chainNameHowTo"></span>. We'll prompt you to switch if you're not.</p></div>
-        <div class="step"><span class="step-n">3</span><h3>Enter an amount</h3><p>Type how much you want to contribute and review your estimated NOVA.</p></div>
-        <div class="step"><span class="step-n">4</span><h3>Confirm &amp; receive</h3><p>Confirm the transaction in your wallet. Tokens are distributed at TGE.</p></div>
+        <div class="step">
+          <span class="step-n">1</span>
+          <h3>Connect wallet</h3>
+          <p>Click Connect Wallet and approve the connection in MetaMask.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">2</span>
+          <h3>Switch network</h3>
+          <p>Make sure you're on <span id="chainNameHowTo"></span>. We'll prompt you to switch if you're not.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">3</span>
+          <h3>Enter an amount</h3>
+          <p>Type how much you want to contribute and review your estimated NOVA.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">4</span>
+          <h3>Confirm &amp; receive</h3>
+          <p>Confirm the transaction in your wallet. Tokens are distributed at TGE.</p>
+        </div>
       </div>
     </section>
 
     <section id="roadmap" class="section">
-      <h2>Roadmap</h2>
+      <span class="eyebrow">Roadmap</span>
+      <h2>Where We're Headed</h2>
       <ol class="roadmap">
-        <li><strong>Phase 1</strong> — Website, branding, and wallet integration (this page)</li>
-        <li><strong>Phase 2</strong> — Token contract design, testing, and audit</li>
-        <li><strong>Phase 3</strong> — Presale contract deployment and liquidity plan</li>
-        <li><strong>Phase 4</strong> — Public presale launch and exchange listings</li>
+        <li><span class="ph">Phase 1</span><div><strong>Website &amp; wallet integration</strong><p>Branding, presale website, and live wallet connect — this page.</p></div></li>
+        <li><span class="ph">Phase 2</span><div><strong>Token contract design &amp; audit</strong><p>Write, test, and get the NOVA token contract independently audited.</p></div></li>
+        <li><span class="ph">Phase 3</span><div><strong>Presale contract deployment</strong><p>Deploy the audited presale contract and publish the liquidity plan.</p></div></li>
+        <li><span class="ph">Phase 4</span><div><strong>Public launch &amp; listings</strong><p>Token generation event, liquidity provisioning, and exchange listings.</p></div></li>
       </ol>
     </section>
 
+    <section id="security" class="section">
+      <span class="eyebrow">Security</span>
+      <h2>Trust &amp; Safety</h2>
+      <div class="cards">
+        <div class="card">
+          <span class="k">Contract Audit</span>
+          <span class="v"><span class="status-dot pending"></span>Pending — scheduled for Phase 2</span>
+        </div>
+        <div class="card">
+          <span class="k">Presale Wallet</span>
+          <span class="v"><span class="status-dot ok"></span>Published in full, verifiable on-chain</span>
+        </div>
+        <div class="card">
+          <span class="k">Team Tokens</span>
+          <span class="v"><span class="status-dot pending"></span>Vesting schedule to be published</span>
+        </div>
+      </div>
+      <p class="hint security-note">
+        Never share your seed phrase or private key with anyone claiming to represent Nova.
+        We will never DM you first, and the only presale wallet is the one published on this page.
+      </p>
+    </section>
+
     <section id="faq" class="section">
-      <h2>FAQ</h2>
+      <span class="eyebrow">FAQ</span>
+      <h2>Frequently Asked Questions</h2>
       <details>
         <summary>Is the presale live?</summary>
         <p>Yes — deposits sent from the buy widget go directly to the presale wallet published above. The NOVA token contract itself hasn't been deployed yet; tokens are distributed at TGE.</p>
@@ -157,7 +211,10 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="brand"><span class="dot"></span> Nova</div>
+      <div class="footer-top">
+        <div class="brand"><span class="mark">N</span>Nova</div>
+        <div id="socialLinks" class="social-links"></div>
+      </div>
       <p>Nova is an early-stage, work-in-progress project. Nothing on this page is financial advice or a solicitation to buy or sell any asset.</p>
       <p class="muted">&copy; <span id="year"></span> Nova</p>
     </div>
