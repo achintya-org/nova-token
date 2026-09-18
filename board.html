@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=10">
+<link rel="stylesheet" href="css/styles.css?v=11">
 </head>
 <body>
   <div id="toastHost" class="toast-host" aria-live="polite"></div>
@@ -32,6 +32,7 @@
 
       <div class="nav-actions">
         <a id="navContact" class="contact-pill" target="_blank" rel="noopener"></a>
+        <a href="https://metamask.app.link/dapp/novapresale.web.app/board.html" target="_blank" rel="noopener" class="link-btn small nav-mm-link">Open in MetaMask</a>
         <button id="connectBtn" class="btn primary small js-connect-btn">Connect Wallet</button>
         <button id="walletChip" class="wallet-chip hidden" title="Click to disconnect"></button>
         <button id="navToggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -61,6 +62,7 @@
         independently verified — the team reviews and removes fraudulent entries manually.
       </p>
       <p class="hint coin-balance-row">Your balance: <strong id="coinBalance" class="hidden">0 coins</strong></p>
+      <p class="hint mm-link-mobile"><a href="https://metamask.app.link/dapp/novapresale.web.app/board.html" target="_blank" rel="noopener">Open in MetaMask &rarr;</a></p>
 
       <div class="board-submit">
         <input id="boardUrl" class="field" type="url" placeholder="https://your-link.com">
@@ -87,14 +89,14 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=10"></script>
+  <script src="js/config.js?v=11"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="js/users.js?v=10"></script>
-  <script src="js/wallet.js?v=10"></script>
-  <script src="js/ui.js?v=10"></script>
-  <script src="js/shared.js?v=10"></script>
-  <script src="js/board.js?v=10"></script>
-  <script src="js/board-ui.js?v=10"></script>
+  <script src="js/users.js?v=11"></script>
+  <script src="js/wallet.js?v=11"></script>
+  <script src="js/ui.js?v=11"></script>
+  <script src="js/shared.js?v=11"></script>
+  <script src="js/board.js?v=11"></script>
+  <script src="js/board-ui.js?v=11"></script>
 </body>
 </html>
