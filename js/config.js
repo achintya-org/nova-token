@@ -18,18 +18,20 @@ const CONFIG = {
   },
   presale: {
     contractAddress: "0x44F5B3B99164A93Ea0c38C80AC01b7805DFd4aA8",
-    rate: 1000, // TODO: placeholder — NOVA per 1 native coin
+    // 25% of the 1,000,000,000 supply (250,000,000 NOVA) sold for a 100 ETH hard cap
+    // => rate = 250,000,000 / 100 = 2,500,000 NOVA per 1 ETH.
+    rate: 2_500_000,
     minBuyNative: 0.05,
     maxBuyNative: 5,
-    hardCapNative: 250,
+    hardCapNative: 100,
     endsAt: null, // TODO: set an ISO date string to enable the countdown
   },
   tokenomics: [
-    { label: "Presale", pct: 40, color: "#f0b429" },
+    { label: "Presale", pct: 25, color: "#f0b429" },
     { label: "Liquidity", pct: 25, color: "#8b7cff" },
     { label: "Team (vested)", pct: 15, color: "#e8845a" },
     { label: "Marketing", pct: 10, color: "#5fb0d9" },
-    { label: "Reserve", pct: 10, color: "#6b7280" },
+    { label: "Reserve", pct: 25, color: "#6b7280" },
   ],
   social: {
     twitter: "",
