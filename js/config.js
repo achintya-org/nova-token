@@ -2,12 +2,12 @@
 // token + presale contract exist — everything else on the page reads from here.
 const CONFIG = {
   chain: {
-    idHex: "0x38",
-    idDecimal: 56,
-    name: "BNB Smart Chain",
-    nativeSymbol: "BNB",
-    rpcUrls: ["https://bsc-dataseed.binance.org"],
-    blockExplorerUrls: ["https://bscscan.com"],
+    idHex: "0x1",
+    idDecimal: 1,
+    name: "Ethereum",
+    nativeSymbol: "ETH",
+    rpcUrls: ["https://ethereum-rpc.publicnode.com"],
+    blockExplorerUrls: ["https://etherscan.io"],
   },
   token: {
     name: "Nova",
@@ -17,12 +17,11 @@ const CONFIG = {
     totalSupply: 1_000_000_000,
   },
   presale: {
-    contractAddress: "", // TODO: set once the presale contract is deployed — buy is disabled until then
+    contractAddress: "0x44F5B3B99164A93Ea0c38C80AC01b7805DFd4aA8",
     rate: 1000, // TODO: placeholder — NOVA per 1 native coin
     minBuyNative: 0.05,
     maxBuyNative: 5,
     hardCapNative: 250,
-    raisedNative: 0, // TODO: wire to the real on-chain raised amount later
     endsAt: null, // TODO: set an ISO date string to enable the countdown
   },
   tokenomics: [

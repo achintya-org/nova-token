@@ -26,19 +26,52 @@ function renderTokenomics() {
   document.getElementById("tokenSymbol").textContent = CONFIG.token.symbol;
   document.getElementById("presaleRate").textContent = `1 ${CONFIG.chain.nativeSymbol} = ${CONFIG.presale.rate.toLocaleString()} ${CONFIG.token.symbol}`;
 
-  const addrEl = document.getElementById("contractAddress");
-  if (CONFIG.token.address) {
-    addrEl.textContent = Wallet.shortAddress(CONFIG.token.address);
-    addrEl.title = CONFIG.token.address;
+  const tokenAddrEl = document.getElementById("tokenContractAddress");
+  tokenAddrEl.textContent = CONFIG.token.address || "Not deployed yet";
+
+  document.getElementById("chainNameCard").textContent = CONFIG.chain.name;
+  document.getElementById("bannerChainName").textContent = CONFIG.chain.name;
+  document.getElementById("chainSymbolLabel").textContent = CONFIG.chain.nativeSymbol;
+  document.getElementById("chainNameHowTo").textContent = CONFIG.chain.name;
+  document.getElementById("chainNameFaq").textContent = CONFIG.chain.name;
+
+  const walletEl = document.getElementById("presaleWalletAddress");
+  const explorerEl = document.getElementById("presaleWalletExplorer");
+  if (CONFIG.presale.contractAddress) {
+    walletEl.textContent = CONFIG.presale.contractAddress;
+    explorerEl.href = `${CONFIG.chain.blockExplorerUrls[0]}/address/${CONFIG.presale.contractAddress}`;
   } else {
-    addrEl.textContent = "To be announced at launch";
+    walletEl.textContent = "Not published yet";
+    explorerEl.classList.add("hidden");
   }
 }
 
-function renderProgress() {
-  const pct = Math.min(100, (CONFIG.presale.raisedNative / CONFIG.presale.hardCapNative) * 100);
+async function fetchRaisedNative() {
+  if (!CONFIG.presale.contractAddress) return 0;
+  try {
+    const res = await fetch(CONFIG.chain.rpcUrls[0], {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "eth_getBalance",
+        params: [CONFIG.presale.contractAddress, "latest"],
+      }),
+    });
+    const { result } = await res.json();
+    return Number(Wallet.formatWei(result, 18, 6));
+  } catch {
+    return null;
+  }
+}
+
+async function renderProgress() {
+  const raised = await fetchRaisedNative();
+  const raisedDisplay = raised === null ? "—" : raised;
+  const pct = raised === null ? 0 : Math.min(100, (raised / CONFIG.presale.hardCapNative) * 100);
   document.getElementById("progressBar").style.width = `${pct}%`;
-  document.getElementById("raisedAmount").textContent = `${CONFIG.presale.raisedNative} ${CONFIG.chain.nativeSymbol}`;
+  document.getElementById("raisedAmount").textContent = `${raisedDisplay} ${CONFIG.chain.nativeSymbol}`;
   document.getElementById("hardCapAmount").textContent = `${CONFIG.presale.hardCapNative} ${CONFIG.chain.nativeSymbol}`;
   document.getElementById("minMaxHint").textContent =
     `Min ${CONFIG.presale.minBuyNative} · Max ${CONFIG.presale.maxBuyNative} ${CONFIG.chain.nativeSymbol}`;
@@ -162,6 +195,7 @@ function initBuyWidget() {
 document.addEventListener("DOMContentLoaded", () => {
   renderTokenomics();
   renderProgress();
+  setInterval(renderProgress, 30000);
   initBuyWidget();
 
   Wallet.onChange(async ({ account }) => {
@@ -176,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("copyContract").addEventListener("click", () => {
-    if (CONFIG.token.address) copyText(CONFIG.token.address, "Contract address copied");
+    if (CONFIG.presale.contractAddress) copyText(CONFIG.presale.contractAddress, "Presale wallet address copied");
   });
 
   if (!Wallet.hasProvider()) {

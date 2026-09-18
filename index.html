@@ -18,7 +18,7 @@
 
   <div id="networkBanner" class="network-banner hidden">
     Wrong network detected.
-    <button id="switchChainBtn" class="link-btn">Switch to <span id="bannerChainName">BNB Smart Chain</span></button>
+    <button id="switchChainBtn" class="link-btn">Switch to <span id="bannerChainName"></span></button>
   </div>
 
   <header class="nav">
@@ -48,9 +48,9 @@
         <span class="badge">Presale · Phase 1</span>
         <h1>Nova <span class="ticker">($NOVA)</span></h1>
         <p class="lede">
-          Connect your wallet, review the tokenomics below, and get ready to
-          join the Nova presale. No token contract is live yet — this page
-          is fully wired up and ready for launch.
+          Connect your wallet and join the Nova presale. Deposits go directly
+          to the presale wallet published below — the NOVA token contract
+          itself hasn't been deployed yet, so tokens are distributed at TGE.
         </p>
 
         <div id="countdown" class="countdown" aria-live="polite">
@@ -71,7 +71,7 @@
           </div>
 
           <div id="buyForm" class="buy-form disabled-panel">
-            <label for="buyAmount">Amount (<span id="chainSymbolLabel">BNB</span>)</label>
+            <label for="buyAmount">Amount (<span id="chainSymbolLabel"></span>)</label>
             <input id="buyAmount" class="field" type="number" min="0" step="0.001" placeholder="0.10">
             <div class="estimate-row">
               <span>You will receive</span>
@@ -82,7 +82,7 @@
           </div>
         </div>
 
-        <p class="hint">Connecting your wallet is fully functional — buying activates once the presale contract is deployed.</p>
+        <p class="hint">Presale deposits are live. Always verify the presale wallet address below before sending funds.</p>
       </div>
     </section>
 
@@ -96,14 +96,19 @@
         <div class="cards">
           <div class="card"><span class="k">Name</span><span class="v">Nova</span></div>
           <div class="card"><span class="k">Symbol</span><span class="v" id="tokenSymbol">NOVA</span></div>
-          <div class="card"><span class="k">Chain</span><span class="v">BNB Smart Chain</span></div>
+          <div class="card"><span class="k">Chain</span><span class="v" id="chainNameCard">—</span></div>
           <div class="card"><span class="k">Total Supply</span><span class="v" id="totalSupply">—</span></div>
           <div class="card"><span class="k">Presale Rate</span><span class="v" id="presaleRate">—</span></div>
-          <div class="card contract-card">
-            <span class="k">Contract Address</span>
-            <span class="v" id="contractAddress">—</span>
-            <button id="copyContract" class="link-btn small">Copy</button>
-          </div>
+          <div class="card"><span class="k">Token Contract</span><span class="v" id="tokenContractAddress">—</span></div>
+        </div>
+      </div>
+
+      <div class="presale-wallet-card">
+        <span class="k">Presale Wallet — send deposits here, verify before every transaction</span>
+        <div class="address-row">
+          <code id="presaleWalletAddress">—</code>
+          <button id="copyContract" class="link-btn small">Copy</button>
+          <a id="presaleWalletExplorer" class="link-btn small" target="_blank" rel="noopener">View on Etherscan</a>
         </div>
       </div>
       <button id="addTokenBtn" class="btn ghost small hidden">Add NOVA to MetaMask</button>
@@ -113,7 +118,7 @@
       <h2>How to Buy</h2>
       <div class="steps">
         <div class="step"><span class="step-n">1</span><h3>Connect wallet</h3><p>Click Connect Wallet and approve the connection in MetaMask.</p></div>
-        <div class="step"><span class="step-n">2</span><h3>Switch network</h3><p>Make sure you're on BNB Smart Chain. We'll prompt you to switch if you're not.</p></div>
+        <div class="step"><span class="step-n">2</span><h3>Switch network</h3><p>Make sure you're on <span id="chainNameHowTo"></span>. We'll prompt you to switch if you're not.</p></div>
         <div class="step"><span class="step-n">3</span><h3>Enter an amount</h3><p>Type how much you want to contribute and review your estimated NOVA.</p></div>
         <div class="step"><span class="step-n">4</span><h3>Confirm &amp; receive</h3><p>Confirm the transaction in your wallet. Tokens are distributed at TGE.</p></div>
       </div>
@@ -133,7 +138,7 @@
       <h2>FAQ</h2>
       <details>
         <summary>Is the presale live?</summary>
-        <p>Not yet. Wallet connection is fully functional, but the presale contract hasn't been deployed — buying is disabled until then.</p>
+        <p>Yes — deposits sent from the buy widget go directly to the presale wallet published above. The NOVA token contract itself hasn't been deployed yet; tokens are distributed at TGE.</p>
       </details>
       <details>
         <summary>Which wallets are supported?</summary>
@@ -141,11 +146,11 @@
       </details>
       <details>
         <summary>Which network should I use?</summary>
-        <p>BNB Smart Chain. If you're on a different network, the page will prompt you to switch.</p>
+        <p><span id="chainNameFaq"></span>. If you're on a different network, the page will prompt you to switch.</p>
       </details>
       <details>
-        <summary>Where can I find the contract address?</summary>
-        <p>It will be published on this page and on our official channels once the token is deployed. Never trust an address from anywhere else.</p>
+        <summary>Where can I find the presale wallet address?</summary>
+        <p>It's published above and on our official channels. Always double-check it before sending funds — never trust an address from anywhere else.</p>
       </details>
     </section>
   </main>
