@@ -1,1 +1,12 @@
-{"projects":{"default":"nova-presale-93088"}}
+{
+  "projects": {
+    "default": "nova-presale-93088"
+  },
+  "targets": {
+    "nova-presale-93088": {
+      "hosting": {
+        "novapresale": ["novapresale"]
+      }
+    }
+  }
+}

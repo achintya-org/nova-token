@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "novapresale",
     "public": ".",
     "ignore": [
       "firebase.json",
