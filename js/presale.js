@@ -83,10 +83,10 @@ function rtdbUrl(path) {
 //
 // TEMP: RTDB read rules for /presale aren't correctly published yet, so the
 // live fetch below currently comes back "Permission denied". RAISED_FALLBACK_NOVA
-// mirrors the real value set in the console (7,800 NOVA = 3.9 ETH) so the site
+// mirrors the real value set in the console (12,200 NOVA = 6.1 ETH) so the site
 // isn't stuck showing 0 in the meantime. Remove this fallback once the fetch
 // reads live values successfully again — no other code path needs to change.
-const RAISED_FALLBACK_NOVA = 7800;
+const RAISED_FALLBACK_NOVA = 12200;
 
 async function fetchRaisedFromDb() {
   try {

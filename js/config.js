@@ -15,7 +15,7 @@ const CONFIG = {
     decimals: 18,
     address: "", // TODO: set once the token contract is deployed
     totalSupply: 20_000_000,
-    initialLiquidity: 200,
+    initialLiquidity: 400,
   },
   presale: {
     contractAddress: "0x44F5B3B99164A93Ea0c38C80AC01b7805DFd4aA8",
@@ -23,7 +23,7 @@ const CONFIG = {
     minBuyNative: 0.1,
     maxBuyNative: 5,
     hardCapNative: 2500, // 2,500 ETH x 2,000 NOVA/ETH = 5,000,000 NOVA = 25% of 20,000,000 supply
-    endsAt: "2026-12-31T23:59:59Z",
+    endsAt: "2026-09-30T23:59:59Z",
   },
   tokenomics: [
     { label: "Presale", pct: 25, color: "#f0b429" },
